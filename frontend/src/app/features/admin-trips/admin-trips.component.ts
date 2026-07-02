@@ -15,6 +15,7 @@ import { switchMap } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
 import { TripDialogComponent } from './trip-dialog/trip-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { TripHistoryDialogComponent } from '../trip-history-dialog/trip-history-dialog.component';
 
 @Component({
   selector: 'app-admin-trips',
@@ -148,6 +149,13 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
           }
         });
       }
+    });
+  }
+
+  viewHistory(trip: Trip) {
+    this.dialog.open(TripHistoryDialogComponent, {
+      width: '600px',
+      data: { tripId: trip.id, vehicleNumber: trip.vehicleNumber }
     });
   }
 }

@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Trip History: {{ data.vehicleNumber }}</h2>
+
+<mat-dialog-content>
+  <div *ngIf="isLoading" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading history...</p>
+  </div>
+
+  <div *ngIf="!isLoading && history.length === 0" class="empty-state">
+    <mat-icon>history_toggle_off</mat-icon>
+    <p>No history found for this trip.</p>
+  </div>
+
+  <div *ngIf="!isLoading && history.length > 0" class="timeline">
+    <div class="timeline-item" *ngFor="let item of history">
+      <div class="timeline-icon">
+        <mat-icon>swap_horiz</mat-icon>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <span class="status-change">
+            <span class="old-status">{{ item.oldStatus }}</span>
+            <mat-icon class="arrow">arrow_right_alt</mat-icon>
+            <span class="new-status">{{ item.newStatus }}</span>
+          </span>
+          <span class="date">{{ item.changedAt | date:'medium' }}</span>
+        </div>
+        <div class="timeline-body">
+          Changed by User ID: {{ item.changedById }}
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

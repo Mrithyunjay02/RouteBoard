@@ -29,6 +29,12 @@ export const routes: Routes = [
         canActivate: [RoleGuard],
         data: { role: 'DRIVER' },
         loadComponent: () => import('./features/driver-dashboard/driver-dashboard.component').then(m => m.DriverDashboardComponent)
+      },
+      {
+        path: 'driver/trips',
+        canActivate: [RoleGuard],
+        data: { role: 'DRIVER' },
+        loadComponent: () => import('./features/driver-trips/driver-trips.component').then(m => m.DriverTripsComponent)
       }
     ]
   },
