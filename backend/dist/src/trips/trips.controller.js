@@ -19,6 +19,8 @@ const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const roles_guard_1 = require("../auth/guards/roles.guard");
 const roles_decorator_1 = require("../auth/decorators/roles.decorator");
 const client_1 = require("@prisma/client");
+const create_trip_dto_1 = require("./dto/create-trip.dto");
+const update_trip_dto_1 = require("./dto/update-trip.dto");
 let TripsController = class TripsController {
     tripsService;
     constructor(tripsService) {
@@ -46,7 +48,7 @@ __decorate([
     (0, roles_decorator_1.Roles)(client_1.Role.ADMIN),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_trip_dto_1.CreateTripDto]),
     __metadata("design:returntype", void 0)
 ], TripsController.prototype, "create", null);
 __decorate([
@@ -70,7 +72,7 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __param(2, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:paramtypes", [String, update_trip_dto_1.UpdateTripDto, Object]),
     __metadata("design:returntype", void 0)
 ], TripsController.prototype, "update", null);
 __decorate([

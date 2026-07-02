@@ -37,6 +37,10 @@ export class TripsService {
 
     if (user.role === Role.DRIVER) {
       // Drivers can only update status
+      if (data.vehicleNumber !== undefined || data.origin !== undefined || data.destination !== undefined || data.scheduledStart !== undefined || data.notes !== undefined || data.driverId !== undefined) {
+        throw new ForbiddenException('Drivers can only update trip status');
+      }
+
       if (data.status && data.status !== trip.status) {
         await this.prisma.tripHistory.create({
           data: {

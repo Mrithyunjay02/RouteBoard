@@ -4,6 +4,8 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
+import { CreateTripDto } from './dto/create-trip.dto';
+import { UpdateTripDto } from './dto/update-trip.dto';
 
 @Controller('trips')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -12,7 +14,7 @@ export class TripsController {
 
   @Post()
   @Roles(Role.ADMIN)
-  create(@Body() createTripDto: any) {
+  create(@Body() createTripDto: CreateTripDto) {
     return this.tripsService.create(createTripDto);
   }
 
@@ -27,7 +29,7 @@ export class TripsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTripDto: any, @Request() req: any) {
+  update(@Param('id') id: string, @Body() updateTripDto: UpdateTripDto, @Request() req: any) {
     return this.tripsService.update(+id, updateTripDto, req.user);
   }
 

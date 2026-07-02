@@ -44,6 +44,9 @@ let TripsService = class TripsService {
     async update(id, data, user) {
         const trip = await this.findOne(id, user);
         if (user.role === client_1.Role.DRIVER) {
+            if (data.vehicleNumber !== undefined || data.origin !== undefined || data.destination !== undefined || data.scheduledStart !== undefined || data.notes !== undefined || data.driverId !== undefined) {
+                throw new common_1.ForbiddenException('Drivers can only update trip status');
+            }
             if (data.status && data.status !== trip.status) {
                 await this.prisma.tripHistory.create({
                     data: {
