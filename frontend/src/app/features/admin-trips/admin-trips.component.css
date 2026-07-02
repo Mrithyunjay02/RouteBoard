@@ -1,0 +1,78 @@
+.trips-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-row h1 {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.filters-card {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.filters-card mat-form-field {
+  width: 220px;
+}
+
+.table-container {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+  font-style: italic;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.scheduled {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.in_progress {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.completed {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.cancelled {
+  background-color: #ffebee;
+  color: #b71c1c;
+}

@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit Trip' : 'Create New Trip' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="tripForm" class="dialog-form">
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Vehicle Number</mat-label>
+      <input matInput formControlName="vehicleNumber" placeholder="e.g. MH-12-AB-1234">
+      <mat-error *ngIf="tripForm.get('vehicleNumber')?.hasError('required')">Vehicle Number is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Origin</mat-label>
+      <input matInput formControlName="origin" placeholder="e.g. Mumbai">
+      <mat-error *ngIf="tripForm.get('origin')?.hasError('required')">Origin is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Destination</mat-label>
+      <input matInput formControlName="destination" placeholder="e.g. Pune">
+      <mat-error *ngIf="tripForm.get('destination')?.hasError('required')">Destination is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="SCHEDULED">Scheduled</mat-option>
+        <mat-option value="IN_PROGRESS">In Progress</mat-option>
+        <mat-option value="COMPLETED">Completed</mat-option>
+        <mat-option value="CANCELLED">Cancelled</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Assign Driver (Optional)</mat-label>
+      <mat-select formControlName="driverId">
+        <mat-option [value]="null">-- Unassigned --</mat-option>
+        <mat-option *ngFor="let driver of drivers" [value]="driver.id">
+          {{ driver.name }} ({{ driver.email }})
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close [disabled]="isSaving">Cancel</button>
+  <button mat-flat-button color="primary" (click)="onSave()" [disabled]="tripForm.invalid || isSaving">
+    {{ isSaving ? 'Saving...' : 'Save' }}
+  </button>
+</mat-dialog-actions>

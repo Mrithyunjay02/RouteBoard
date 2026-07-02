@@ -19,6 +19,12 @@ export const routes: Routes = [
         loadComponent: () => import('./features/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
       },
       {
+        path: 'admin/trips',
+        canActivate: [RoleGuard],
+        data: { role: 'ADMIN' },
+        loadComponent: () => import('./features/admin-trips/admin-trips.component').then(m => m.AdminTripsComponent)
+      },
+      {
         path: 'driver',
         canActivate: [RoleGuard],
         data: { role: 'DRIVER' },
