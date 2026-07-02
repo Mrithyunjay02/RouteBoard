@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { TripsService, Trip } from '../../../../core/services/trips.service';
-import { User } from '../../../../core/services/auth.service';
+import { TripsService, Trip } from '../../../core/services/trips.service';
+import { User } from '../../../core/services/auth.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -51,8 +51,8 @@ export class TripDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.tripsService.getDrivers().subscribe({
-      next: (drivers) => this.drivers = drivers,
-      error: (err) => console.error('Failed to load drivers', err)
+      next: (drivers: User[]) => this.drivers = drivers,
+      error: (err: any) => console.error('Failed to load drivers', err)
     });
   }
 

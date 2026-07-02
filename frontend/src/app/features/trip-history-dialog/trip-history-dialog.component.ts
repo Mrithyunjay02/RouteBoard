@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { TripsService, TripHistory } from '../../../core/services/trips.service';
+import { TripsService, TripHistory } from '../../core/services/trips.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -25,11 +25,11 @@ export class TripHistoryDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.tripsService.getTripHistory(this.data.tripId).subscribe({
-      next: (history) => {
+      next: (history: TripHistory[]) => {
         this.history = history;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Failed to load history', err);
         this.isLoading = false;
       }
