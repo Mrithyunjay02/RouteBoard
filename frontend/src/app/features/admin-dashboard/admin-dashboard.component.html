@@ -1,1 +1,105 @@
-<p>admin-dashboard works!</p>
+<div class="dashboard-container">
+  <h1>Dashboard Overview</h1>
+  
+  <div *ngIf="isLoading && !stats" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading metrics...</p>
+  </div>
+
+  <div *ngIf="stats" class="dashboard-grid">
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-wrapper total-icon">
+          <mat-icon>assessment</mat-icon>
+        </div>
+        <mat-card-title>Total Trips</mat-card-title>
+        <mat-card-subtitle>All time</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="stat-value">{{ stats.total }}</h2>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-wrapper scheduled-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <mat-card-title>Scheduled</mat-card-title>
+        <mat-card-subtitle>Upcoming</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="stat-value">{{ stats.scheduled }}</h2>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-wrapper progress-icon">
+          <mat-icon>local_shipping</mat-icon>
+        </div>
+        <mat-card-title>In Progress</mat-card-title>
+        <mat-card-subtitle>On the road</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="stat-value">{{ stats.inProgress }}</h2>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-wrapper completed-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <mat-card-title>Completed</mat-card-title>
+        <mat-card-subtitle>Successfully delivered</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="stat-value">{{ stats.completed }}</h2>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon-wrapper cancelled-icon">
+          <mat-icon>cancel</mat-icon>
+        </div>
+        <mat-card-title>Cancelled</mat-card-title>
+        <mat-card-subtitle>Aborted trips</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h2 class="stat-value">{{ stats.cancelled }}</h2>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="stats" class="chart-section">
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Status Distribution</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="simple-chart">
+          <div class="chart-bar scheduled-bar" [style.height.%]="stats.total ? (stats.scheduled / stats.total) * 100 : 0">
+            <span>{{stats.scheduled}}</span>
+          </div>
+          <div class="chart-bar progress-bar" [style.height.%]="stats.total ? (stats.inProgress / stats.total) * 100 : 0">
+            <span>{{stats.inProgress}}</span>
+          </div>
+          <div class="chart-bar completed-bar" [style.height.%]="stats.total ? (stats.completed / stats.total) * 100 : 0">
+            <span>{{stats.completed}}</span>
+          </div>
+          <div class="chart-bar cancelled-bar" [style.height.%]="stats.total ? (stats.cancelled / stats.total) * 100 : 0">
+            <span>{{stats.cancelled}}</span>
+          </div>
+        </div>
+        <div class="chart-labels">
+          <span>Scheduled</span>
+          <span>In Progress</span>
+          <span>Completed</span>
+          <span>Cancelled</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

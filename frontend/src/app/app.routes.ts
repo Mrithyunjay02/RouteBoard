@@ -1,24 +1,30 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
+import { LayoutComponent } from './shared/layout/layout.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  // Admin module lazy load placeholder
   {
-    path: 'admin',
-    canActivate: [AuthGuard, RoleGuard],
-    data: { role: 'ADMIN' },
-    loadComponent: () => import('./features/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
-  },
-  // Driver module lazy load placeholder
-  {
-    path: 'driver',
-    canActivate: [AuthGuard, RoleGuard],
-    data: { role: 'DRIVER' },
-    loadComponent: () => import('./features/driver-dashboard/driver-dashboard.component').then(m => m.DriverDashboardComponent)
+    path: '',
+    component: LayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'admin', pathMatch: 'full' },
+      {
+        path: 'admin',
+        canActivate: [RoleGuard],
+        data: { role: 'ADMIN' },
+        loadComponent: () => import('./features/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
+      },
+      {
+        path: 'driver',
+        canActivate: [RoleGuard],
+        data: { role: 'DRIVER' },
+        loadComponent: () => import('./features/driver-dashboard/driver-dashboard.component').then(m => m.DriverDashboardComponent)
+      }
+    ]
   },
   { path: '**', redirectTo: '/login' }
 ];
