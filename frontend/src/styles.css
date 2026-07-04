@@ -1,4 +1,205 @@
-/* You can add global styles to this file, and also import other style files */
+/* ──────────────────────────────────────────────────────────
+   RouteBoard — Global Styles
+   Enterprise fleet management design system
+   ────────────────────────────────────────────────────────── */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* ── Reset & Base ── */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f6fa;
+  color: #2d3748;
+}
+
+/* ── Design Tokens ── */
+:root {
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  /* Colors */
+  --color-primary: #1565c0;
+  --color-primary-light: #e3f2fd;
+  --color-surface: #ffffff;
+  --color-background: #f5f6fa;
+  --color-border: #e2e8f0;
+  --color-text-primary: #1a202c;
+  --color-text-secondary: #4a5568;
+  --color-text-muted: #718096;
+
+  /* Status Colors */
+  --color-scheduled: #0277bd;
+  --color-scheduled-bg: #e1f5fe;
+  --color-progress: #ef6c00;
+  --color-progress-bg: #fff3e0;
+  --color-completed: #2e7d32;
+  --color-completed-bg: #e8f5e9;
+  --color-cancelled: #c62828;
+  --color-cancelled-bg: #fce4ec;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ── Material Table Overrides ── */
+.mat-mdc-table {
+  background: var(--color-surface) !important;
+}
+
+.mat-mdc-header-row {
+  background-color: #f8fafc !important;
+  border-bottom: 2px solid var(--color-border) !important;
+}
+
+.mat-mdc-header-cell {
+  color: var(--color-text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  padding: 0 var(--space-md) !important;
+}
+
+.mat-mdc-row {
+  border-bottom: 1px solid #f0f2f5 !important;
+  transition: background-color var(--transition-fast) !important;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f8fafc !important;
+}
+
+/* Subtle zebra striping */
+.mat-mdc-row:nth-child(even) {
+  background-color: #fafbfc;
+}
+.mat-mdc-row:nth-child(even):hover {
+  background-color: #f0f4f8 !important;
+}
+
+.mat-mdc-cell {
+  color: var(--color-text-primary) !important;
+  font-size: 13.5px !important;
+  padding: 0 var(--space-md) !important;
+  height: 52px !important;
+}
+
+/* ── Paginator ── */
+.mat-mdc-paginator {
+  border-top: 1px solid var(--color-border) !important;
+  background: var(--color-surface) !important;
+}
+
+/* ── Material Card Overrides ── */
+.mat-mdc-card {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  border: 1px solid var(--color-border);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal) !important;
+}
+
+.mat-mdc-card:hover {
+  box-shadow: var(--shadow-card-hover) !important;
+}
+
+/* ── Material Buttons ── */
+.mat-mdc-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-raised-button,
+.mdc-button {
+  border-radius: var(--radius-sm) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  transition: all var(--transition-normal) !important;
+}
+
+.mat-mdc-unelevated-button[color="primary"],
+.mat-mdc-raised-button[color="primary"] {
+  box-shadow: 0 1px 3px rgba(21, 101, 192, 0.2) !important;
+}
+
+.mat-mdc-unelevated-button[color="primary"]:hover,
+.mat-mdc-raised-button[color="primary"]:hover {
+  box-shadow: 0 3px 8px rgba(21, 101, 192, 0.3) !important;
+}
+
+.mat-mdc-icon-button {
+  transition: background-color var(--transition-fast), color var(--transition-fast) !important;
+}
+
+.mat-mdc-icon-button:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* ── Material Form Field ── */
+.mat-mdc-form-field-subscript-wrapper {
+  margin-bottom: 0 !important;
+}
+
+/* ── Dialog Overrides ── */
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+.mat-mdc-dialog-title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  padding: var(--space-lg) var(--space-lg) var(--space-md) !important;
+  letter-spacing: -0.01em !important;
+}
+
+.mat-mdc-dialog-content {
+  padding: 0 var(--space-lg) !important;
+}
+
+.mat-mdc-dialog-actions {
+  padding: var(--space-md) var(--space-lg) var(--space-lg) !important;
+  gap: var(--space-sm);
+}
+
+/* ── Snackbar ── */
+.mat-mdc-snack-bar-container {
+  border-radius: var(--radius-sm) !important;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a0aec0;
+}

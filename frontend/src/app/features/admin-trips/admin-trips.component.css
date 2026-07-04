@@ -1,8 +1,9 @@
 .trips-container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
+/* ── Header Row ── */
 .header-row {
   display: flex;
   justify-content: space-between;
@@ -12,30 +13,38 @@
 
 .header-row h1 {
   margin: 0;
-  color: #333;
-  font-weight: 500;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
 }
 
+/* ── Filters Card ── */
 .filters-card {
   display: flex;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   align-items: center;
   flex-wrap: wrap;
-  background-color: white;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  background-color: var(--color-surface);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
 }
 
 .filters-card mat-form-field {
-  width: 220px;
+  width: 200px;
+  flex-shrink: 0;
 }
 
+/* ── Table Container ── */
 .table-container {
-  background-color: white;
-  border-radius: 8px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
   overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
 }
 
 table {
@@ -44,35 +53,40 @@ table {
 
 .empty-state {
   text-align: center;
-  padding: 48px;
-  color: #666;
-  font-style: italic;
+  padding: 56px 24px;
+  color: var(--color-text-muted);
+  font-style: normal;
+  font-size: 14px;
 }
 
+/* ── Status Badges ── */
 .status-badge {
   padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
   font-weight: 600;
   display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .scheduled {
-  background-color: #e3f2fd;
-  color: #0d47a1;
+  background-color: var(--color-scheduled-bg);
+  color: var(--color-scheduled);
 }
 
 .in_progress {
-  background-color: #fff3e0;
-  color: #e65100;
+  background-color: var(--color-progress-bg);
+  color: var(--color-progress);
 }
 
 .completed {
-  background-color: #e8f5e9;
-  color: #1b5e20;
+  background-color: var(--color-completed-bg);
+  color: var(--color-completed);
 }
 
 .cancelled {
-  background-color: #ffebee;
-  color: #b71c1c;
+  background-color: var(--color-cancelled-bg);
+  color: var(--color-cancelled);
 }

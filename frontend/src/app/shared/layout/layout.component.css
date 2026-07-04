@@ -2,47 +2,82 @@
   height: 100vh;
 }
 
+/* ── Sidebar ── */
 .sidenav {
   width: 260px;
-  background-color: #ffffff;
-  border-right: 1px solid #e0e0e0;
+  background-color: #1a202c;
+  border-right: none;
 }
 
 .sidenav-header {
   display: flex;
   align-items: center;
-  padding: 24px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .sidenav-header h2 {
   margin: 0;
   margin-left: 12px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
 .logo {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #63b3ed !important;
+}
+
+/* ── Nav Items ── */
+::ng-deep .sidenav .mat-mdc-list-item {
+  margin: 4px 12px;
+  border-radius: 8px !important;
+  height: 44px !important;
+  color: #a0aec0 !important;
+  transition: all 200ms ease !important;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  color: #e2e8f0 !important;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item .mdc-list-item__primary-text {
+  color: inherit !important;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item .mat-icon {
+  color: inherit !important;
+  margin-right: 12px;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .active-link {
-  background-color: rgba(25, 118, 210, 0.08); /* Primary color with opacity */
-  color: #1976d2 !important;
-  border-right: 4px solid #1976d2;
+  background-color: rgba(99, 179, 237, 0.12) !important;
+  color: #63b3ed !important;
+  border-right: none;
 }
 
 .active-link mat-icon {
-  color: #1976d2;
+  color: #63b3ed !important;
 }
 
+/* ── Top Toolbar ── */
 .header-toolbar {
   background-color: #ffffff;
-  color: #333;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  border-bottom: 1px solid #e0e0e0;
+  color: var(--color-text-primary);
+  box-shadow: 0 1px 0 0 #e2e8f0;
+  border-bottom: none;
+  height: 56px;
+  padding: 0 24px;
 }
 
 .menu-button {
@@ -56,35 +91,43 @@
 .user-info {
   display: flex;
   align-items: center;
-  margin-right: 16px;
+  margin-right: 12px;
+  gap: 8px;
 }
 
 .user-name {
   font-weight: 500;
-  margin-right: 8px;
-  font-size: 14px;
+  font-size: 13.5px;
+  color: var(--color-text-primary);
 }
 
 .user-role.badge {
-  background-color: #e0e0e0;
-  color: #555;
-  padding: 2px 8px;
-  border-radius: 12px;
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  padding: 3px 10px;
+  border-radius: 6px;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
+/* ── Content Area ── */
 .content-area {
-  padding: 24px;
-  background-color: #f4f6f8;
-  min-height: calc(100vh - 64px);
+  padding: 28px 32px;
+  background-color: var(--color-background);
+  min-height: calc(100vh - 56px);
 }
 
+/* ── Responsive ── */
 @media (max-width: 768px) {
   .sidenav {
-    width: 240px;
+    width: 260px;
   }
   .menu-button {
     display: block;
+  }
+  .content-area {
+    padding: 20px 16px;
   }
 }
