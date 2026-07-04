@@ -6,4 +6,5 @@ export declare class UsersService {
     findByEmail(email: string): Promise<User | null>;
     findById(id: number): Promise<User | null>;
     create(data: Prisma.UserCreateInput): Promise<User>;
+    findAllDrivers(): Promise<Partial<User>[]>;
 }

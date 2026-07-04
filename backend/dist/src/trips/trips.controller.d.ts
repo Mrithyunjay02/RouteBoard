@@ -16,7 +16,7 @@ export declare class TripsController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    findAll(req: any): Promise<{
+    findAll(req: any, driverId?: string): Promise<{
         id: number;
         vehicleNumber: string;
         origin: string;
@@ -52,5 +52,4 @@ export declare class TripsController {
         createdAt: Date;
         updatedAt: Date;
     }>;
-    remove(id: string): Promise<void>;
 }

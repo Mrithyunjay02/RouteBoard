@@ -32,6 +32,19 @@ let UsersService = class UsersService {
             data,
         });
     }
+    async findAllDrivers() {
+        return this.prisma.user.findMany({
+            where: { role: 'DRIVER' },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
+            }
+        });
+    }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([

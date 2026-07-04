@@ -18,9 +18,13 @@ let TripsService = class TripsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll(user) {
+    async findAll(user, driverId) {
         if (user.role === client_1.Role.ADMIN) {
-            return this.prisma.trip.findMany({ include: { driver: true } });
+            const whereClause = driverId ? { driverId } : {};
+            return this.prisma.trip.findMany({
+                where: whereClause,
+                include: { driver: true }
+            });
         }
         else {
             return this.prisma.trip.findMany({ where: { driverId: user.id } });
@@ -39,15 +43,47 @@ let TripsService = class TripsService {
         return trip;
     }
     async create(data) {
+        if (data.vehicleNumber) {
+            const existing = await this.prisma.trip.findFirst({ where: { vehicleNumber: data.vehicleNumber } });
+            if (existing) {
+                throw new common_1.BadRequestException('Vehicle number already exists.');
+            }
+        }
         return this.prisma.trip.create({ data });
     }
     async update(id, data, user) {
         const trip = await this.findOne(id, user);
+        if (trip.status === 'CANCELLED') {
+            throw new common_1.BadRequestException('Cancelled trips cannot be modified.');
+        }
+        if (trip.status === 'COMPLETED') {
+            throw new common_1.BadRequestException('Completed trips cannot be modified.');
+        }
+        if (data.vehicleNumber && data.vehicleNumber !== trip.vehicleNumber) {
+            const existing = await this.prisma.trip.findFirst({
+                where: {
+                    vehicleNumber: data.vehicleNumber,
+                    id: { not: id }
+                }
+            });
+            if (existing) {
+                throw new common_1.BadRequestException('Vehicle number already exists.');
+            }
+        }
         if (user.role === client_1.Role.DRIVER) {
             if (data.vehicleNumber !== undefined || data.origin !== undefined || data.destination !== undefined || data.scheduledStart !== undefined || data.notes !== undefined || data.driverId !== undefined) {
                 throw new common_1.ForbiddenException('Drivers can only update trip status');
             }
+            if (data.status === 'CANCELLED') {
+                throw new common_1.ForbiddenException('Drivers cannot cancel trips');
+            }
             if (data.status && data.status !== trip.status) {
+                if (trip.status === 'SCHEDULED' && data.status !== 'IN_PROGRESS') {
+                    throw new common_1.BadRequestException('Invalid status transition.');
+                }
+                if (trip.status === 'IN_PROGRESS' && data.status !== 'COMPLETED') {
+                    throw new common_1.BadRequestException('Invalid status transition.');
+                }
                 await this.prisma.tripHistory.create({
                     data: {
                         tripId: trip.id,
@@ -64,6 +100,12 @@ let TripsService = class TripsService {
             return trip;
         }
         if (data.status && data.status !== trip.status) {
+            if (trip.status === 'SCHEDULED' && data.status !== 'IN_PROGRESS' && data.status !== 'CANCELLED') {
+                throw new common_1.BadRequestException('Invalid status transition.');
+            }
+            if (trip.status === 'IN_PROGRESS' && data.status !== 'COMPLETED' && data.status !== 'CANCELLED') {
+                throw new common_1.BadRequestException('Invalid status transition.');
+            }
             await this.prisma.tripHistory.create({
                 data: {
                     tripId: trip.id,
@@ -77,9 +119,6 @@ let TripsService = class TripsService {
             where: { id },
             data,
         });
-    }
-    async remove(id) {
-        await this.prisma.trip.delete({ where: { id } });
     }
 };
 exports.TripsService = TripsService;

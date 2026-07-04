@@ -20,16 +20,22 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Driver Name</mat-label>
-      <input matInput [(ngModel)]="filterDriver" (keyup)="applyFilter()" placeholder="Filter by driver">
-      <mat-icon matSuffix>person_search</mat-icon>
+      <mat-select [(ngModel)]="filterDriverId" (selectionChange)="onDriverFilterChange()">
+        <mat-option [value]="null">All Drivers</mat-option>
+        <mat-option *ngFor="let driver of drivers" [value]="driver.id">
+          {{ driver.name }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Date (YYYY-MM-DD)</mat-label>
-      <input matInput [(ngModel)]="filterDate" (keyup)="applyFilter()" placeholder="e.g. 2026-07-02" type="date">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="filterDate" (dateChange)="applyFilter()" (dateInput)="applyFilter()" placeholder="Select a date">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     
-    <button mat-button color="warn" (click)="filterStatus=''; filterDriver=''; filterDate=''; applyFilter()">Clear Filters</button>
+    <button mat-button color="warn" (click)="clearFilters()">Clear Filters</button>
   </div>
 
   <div class="mat-elevation-z2 table-container">
@@ -72,14 +78,16 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let trip">
-          <button mat-icon-button color="primary" (click)="openTripDialog(trip)" title="Edit">
+          <button *ngIf="trip.status !== 'CANCELLED' && trip.status !== 'COMPLETED'"
+                  mat-icon-button color="primary" (click)="openTripDialog(trip)" title="Edit">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button color="accent" (click)="viewHistory(trip)" title="History">
             <mat-icon>history</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="deleteTrip(trip)" title="Delete">
-            <mat-icon>delete</mat-icon>
+          <button *ngIf="trip.status !== 'CANCELLED' && trip.status !== 'COMPLETED'" 
+                  mat-icon-button color="warn" (click)="cancelTrip(trip)" title="Cancel">
+            <mat-icon>block</mat-icon>
           </button>
         </td>
       </ng-container>

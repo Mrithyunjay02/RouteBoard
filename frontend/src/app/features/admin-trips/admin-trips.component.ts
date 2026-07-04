@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { timer, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +33,9 @@ import { TripHistoryDialogComponent } from '../trip-history-dialog/trip-history-
     MatIconModule,
     MatDialogModule,
     MatSnackBarModule,
-    FormsModule
+    FormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './admin-trips.component.html',
   styleUrls: ['./admin-trips.component.css']
@@ -42,8 +46,9 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
   private pollingSub?: Subscription;
 
   filterStatus = '';
-  filterDriver = '';
+  filterDriverId: number | null = null;
   filterDate = '';
+  drivers: any[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -58,10 +63,13 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.tripsService.getDrivers().subscribe(drivers => {
+      this.drivers = drivers;
+    });
     this.loadData();
     // Poll every 5 seconds
     this.pollingSub = timer(5000, 5000).pipe(
-      switchMap(() => this.tripsService.getAllTrips())
+      switchMap(() => this.tripsService.getAllTrips(this.filterDriverId))
     ).subscribe({
       next: (trips) => {
         // Update data while keeping sorting/pagination
@@ -72,7 +80,7 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    this.tripsService.getAllTrips().subscribe({
+    this.tripsService.getAllTrips(this.filterDriverId).subscribe({
       next: (trips) => {
         this.dataSource.data = trips;
         this.dataSource.paginator = this.paginator;
@@ -91,10 +99,18 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
+    let formattedDate = '';
+    if (this.filterDate) {
+      const d = new Date(this.filterDate);
+      const year = d.getFullYear();
+      const month = ('0' + (d.getMonth() + 1)).slice(-2);
+      const day = ('0' + d.getDate()).slice(-2);
+      formattedDate = `${year}-${month}-${day}`;
+    }
+
     const filterValue = {
       status: this.filterStatus,
-      driver: this.filterDriver,
-      date: this.filterDate
+      date: formattedDate
     };
     this.dataSource.filter = JSON.stringify(filterValue);
   }
@@ -105,14 +121,30 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
       
       const matchStatus = !searchTerms.status || data.status === searchTerms.status;
       
-      const driverName = data.driver?.name?.toLowerCase() || '';
-      const matchDriver = !searchTerms.driver || driverName.includes(searchTerms.driver.toLowerCase());
+      const tripD = new Date(data.createdAt);
+      const tYear = tripD.getFullYear();
+      const tMonth = ('0' + (tripD.getMonth() + 1)).slice(-2);
+      const tDay = ('0' + tripD.getDate()).slice(-2);
+      const tripDate = `${tYear}-${tMonth}-${tDay}`;
       
-      const tripDate = new Date(data.createdAt).toISOString().split('T')[0];
       const matchDate = !searchTerms.date || tripDate === searchTerms.date;
 
-      return matchStatus && matchDriver && matchDate;
+      return matchStatus && matchDate;
     };
+  }
+
+  onDriverFilterChange() {
+    this.loadData();
+  }
+
+  clearFilters() {
+    this.filterStatus = '';
+    this.filterDate = '';
+    if (this.filterDriverId !== null) {
+      this.filterDriverId = null;
+      this.loadData();
+    }
+    this.applyFilter();
   }
 
   openTripDialog(trip?: Trip) {
@@ -128,24 +160,24 @@ export class AdminTripsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteTrip(trip: Trip) {
+  cancelTrip(trip: Trip) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
-        title: 'Delete Trip',
-        message: `Are you sure you want to delete trip ${trip.vehicleNumber}?`
+        title: 'Cancel Trip',
+        message: `Are you sure you want to cancel this trip? This action cannot be undone.`
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.tripsService.deleteTrip(trip.id).subscribe({
+        this.tripsService.updateTrip(trip.id, { status: 'CANCELLED' }).subscribe({
           next: () => {
-            this.snackBar.open('Trip deleted successfully', 'Close', { duration: 3000 });
+            this.snackBar.open('Trip cancelled successfully', 'Close', { duration: 3000 });
             this.loadData();
           },
           error: (err) => {
-            this.snackBar.open('Failed to delete trip', 'Close', { duration: 3000, panelClass: 'error-snackbar' });
+            this.snackBar.open('Failed to cancel trip', 'Close', { duration: 3000, panelClass: 'error-snackbar' });
           }
         });
       }

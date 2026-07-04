@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from './auth.service';
 
 export interface Trip {
@@ -8,6 +9,7 @@ export interface Trip {
   vehicleNumber: string;
   origin: string;
   destination: string;
+  scheduledStart: string;
   status: 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
   driverId: number | null;
   driver?: User;
@@ -29,17 +31,21 @@ export interface TripHistory {
 })
 export class TripsService {
   private readonly API_URL = 'http://localhost:3000/trips';
-  private readonly HISTORY_URL = 'http://localhost:3000/trip-history';
+  private readonly HISTORY_URL = 'http://localhost:3000/history';
   private readonly USERS_URL = 'http://localhost:3000/users';
 
   constructor(private http: HttpClient) {}
 
-  getAllTrips(): Observable<Trip[]> {
-    return this.http.get<Trip[]>(this.API_URL);
+  getAllTrips(driverId?: number | null): Observable<Trip[]> {
+    let params = {};
+    if (driverId) {
+      params = { driverId: driverId.toString() };
+    }
+    return this.http.get<Trip[]>(this.API_URL, { params });
   }
 
   getDriverTrips(): Observable<Trip[]> {
-    return this.http.get<Trip[]>(`${this.API_URL}/driver/my-trips`);
+    return this.http.get<Trip[]>(this.API_URL);
   }
 
   createTrip(trip: Partial<Trip>): Observable<Trip> {
@@ -50,12 +56,19 @@ export class TripsService {
     return this.http.patch<Trip>(`${this.API_URL}/${id}`, updates);
   }
 
-  deleteTrip(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`);
-  }
+
 
   getTripHistory(tripId: number): Observable<TripHistory[]> {
-    return this.http.get<TripHistory[]>(`${this.HISTORY_URL}/${tripId}`);
+    return this.http.get<any[]>(`${this.HISTORY_URL}/${tripId}`).pipe(
+      map(res => res.map(item => ({
+        id: item.id,
+        tripId: item.tripId,
+        oldStatus: item.previousStatus,
+        newStatus: item.newStatus,
+        changedById: item.changedBy,
+        changedAt: item.timestamp
+      })))
+    );
   }
 
   getDrivers(): Observable<User[]> {

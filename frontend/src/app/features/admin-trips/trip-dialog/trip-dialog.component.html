@@ -7,18 +7,30 @@
       <mat-label>Vehicle Number</mat-label>
       <input matInput formControlName="vehicleNumber" placeholder="e.g. MH-12-AB-1234">
       <mat-error *ngIf="tripForm.get('vehicleNumber')?.hasError('required')">Vehicle Number is required</mat-error>
+      <mat-error *ngIf="tripForm.get('vehicleNumber')?.hasError('minlength')">Must be at least 3 characters</mat-error>
+      <mat-error *ngIf="tripForm.get('vehicleNumber')?.hasError('maxlength')">Must be at most 30 characters</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Origin</mat-label>
       <input matInput formControlName="origin" placeholder="e.g. Mumbai">
       <mat-error *ngIf="tripForm.get('origin')?.hasError('required')">Origin is required</mat-error>
+      <mat-error *ngIf="tripForm.get('origin')?.hasError('minlength')">Must be at least 2 characters</mat-error>
+      <mat-error *ngIf="tripForm.get('origin')?.hasError('maxlength')">Must be at most 100 characters</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Destination</mat-label>
       <input matInput formControlName="destination" placeholder="e.g. Pune">
       <mat-error *ngIf="tripForm.get('destination')?.hasError('required')">Destination is required</mat-error>
+      <mat-error *ngIf="tripForm.get('destination')?.hasError('minlength')">Must be at least 2 characters</mat-error>
+      <mat-error *ngIf="tripForm.get('destination')?.hasError('maxlength')">Must be at most 100 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Scheduled Start</mat-label>
+      <input matInput type="datetime-local" formControlName="scheduledStart" #pickerInput (click)="pickerInput.showPicker()">
+      <mat-error *ngIf="tripForm.get('scheduledStart')?.hasError('required')">Scheduled Start is required</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
@@ -32,13 +44,13 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Assign Driver (Optional)</mat-label>
+      <mat-label>Assign Driver</mat-label>
       <mat-select formControlName="driverId">
-        <mat-option [value]="null">-- Unassigned --</mat-option>
         <mat-option *ngFor="let driver of drivers" [value]="driver.id">
           {{ driver.name }} ({{ driver.email }})
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="tripForm.get('driverId')?.hasError('required')">Driver assignment is required</mat-error>
     </mat-form-field>
 
   </form>

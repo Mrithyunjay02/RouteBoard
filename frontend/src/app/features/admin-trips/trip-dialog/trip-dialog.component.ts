@@ -41,11 +41,12 @@ export class TripDialogComponent implements OnInit {
     this.isEditMode = !!data;
 
     this.tripForm = this.fb.group({
-      vehicleNumber: [data?.vehicleNumber || '', Validators.required],
-      origin: [data?.origin || '', Validators.required],
-      destination: [data?.destination || '', Validators.required],
+      vehicleNumber: [data?.vehicleNumber || '', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      origin: [data?.origin || '', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      destination: [data?.destination || '', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      scheduledStart: [data?.scheduledStart ? new Date(data.scheduledStart).toISOString().substring(0, 16) : '', Validators.required],
       status: [data?.status || 'SCHEDULED', Validators.required],
-      driverId: [data?.driverId || null]
+      driverId: [data?.driverId || null, Validators.required]
     });
   }
 
@@ -60,7 +61,29 @@ export class TripDialogComponent implements OnInit {
     if (this.tripForm.invalid) return;
 
     this.isSaving = true;
-    const formValue = this.tripForm.value;
+    
+    let isoDate = '';
+    try {
+      if (this.tripForm.value.scheduledStart) {
+        isoDate = new Date(this.tripForm.value.scheduledStart).toISOString();
+      }
+    } catch (e) {
+      console.error('Invalid date format:', this.tripForm.value.scheduledStart);
+      this.snackBar.open('Invalid Scheduled Start Date', 'Close', { duration: 3000 });
+      this.isSaving = false;
+      return;
+    }
+
+    const formValue = {
+      ...this.tripForm.value,
+      vehicleNumber: this.tripForm.value.vehicleNumber?.trim(),
+      origin: this.tripForm.value.origin?.trim(),
+      destination: this.tripForm.value.destination?.trim(),
+      scheduledStart: isoDate,
+      driverId: Number(this.tripForm.value.driverId)
+    };
+    
+    console.log('PAYLOAD BEFORE SENDING:', formValue);
 
     if (this.isEditMode && this.data) {
       this.tripsService.updateTrip(this.data.id, formValue).subscribe({
@@ -68,8 +91,10 @@ export class TripDialogComponent implements OnInit {
           this.snackBar.open('Trip updated successfully', 'Close', { duration: 3000 });
           this.dialogRef.close(true);
         },
-        error: () => {
-          this.snackBar.open('Failed to update trip', 'Close', { duration: 3000, panelClass: 'error-snackbar' });
+        error: (err) => {
+          const msg = err?.error?.message || 'Failed to update trip';
+          const errorMsg = Array.isArray(msg) ? msg[0] : msg;
+          this.snackBar.open(errorMsg, 'Close', { duration: 3000, panelClass: 'error-snackbar' });
           this.isSaving = false;
         }
       });
@@ -79,8 +104,10 @@ export class TripDialogComponent implements OnInit {
           this.snackBar.open('Trip created successfully', 'Close', { duration: 3000 });
           this.dialogRef.close(true);
         },
-        error: () => {
-          this.snackBar.open('Failed to create trip', 'Close', { duration: 3000, panelClass: 'error-snackbar' });
+        error: (err) => {
+          const msg = err?.error?.message || 'Failed to create trip';
+          const errorMsg = Array.isArray(msg) ? msg[0] : msg;
+          this.snackBar.open(errorMsg, 'Close', { duration: 3000, panelClass: 'error-snackbar' });
           this.isSaving = false;
         }
       });

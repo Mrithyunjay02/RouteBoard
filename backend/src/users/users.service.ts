@@ -23,4 +23,18 @@ export class UsersService {
       data,
     });
   }
+
+  async findAllDrivers(): Promise<Partial<User>[]> {
+    return this.prisma.user.findMany({
+      where: { role: 'DRIVER' },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      }
+    });
+  }
 }

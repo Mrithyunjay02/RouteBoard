@@ -36,7 +36,8 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let trip">
-          <button mat-flat-button color="primary" class="action-btn" (click)="openUpdateStatusDialog(trip)">
+          <button *ngIf="trip.status !== 'CANCELLED' && trip.status !== 'COMPLETED'"
+                  mat-flat-button color="primary" class="action-btn" (click)="openUpdateStatusDialog(trip)">
             Update Status
           </button>
           <button mat-icon-button color="accent" (click)="viewHistory(trip)" title="View History">

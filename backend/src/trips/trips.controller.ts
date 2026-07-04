@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { TripsService } from './trips.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -19,8 +19,9 @@ export class TripsController {
   }
 
   @Get()
-  findAll(@Request() req: any) {
-    return this.tripsService.findAll(req.user);
+  findAll(@Request() req: any, @Query('driverId') driverId?: string) {
+    const parsedDriverId = driverId ? parseInt(driverId, 10) : undefined;
+    return this.tripsService.findAll(req.user, parsedDriverId);
   }
 
   @Get(':id')
@@ -33,9 +34,4 @@ export class TripsController {
     return this.tripsService.update(+id, updateTripDto, req.user);
   }
 
-  @Delete(':id')
-  @Roles(Role.ADMIN)
-  remove(@Param('id') id: string) {
-    return this.tripsService.remove(+id);
-  }
 }

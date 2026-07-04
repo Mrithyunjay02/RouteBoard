@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Trip, TripStatus, Role } from '@prisma/client';
 
@@ -6,9 +6,13 @@ import { Trip, TripStatus, Role } from '@prisma/client';
 export class TripsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(user: any): Promise<Trip[]> {
+  async findAll(user: any, driverId?: number): Promise<Trip[]> {
     if (user.role === Role.ADMIN) {
-      return this.prisma.trip.findMany({ include: { driver: true } });
+      const whereClause = driverId ? { driverId } : {};
+      return this.prisma.trip.findMany({ 
+        where: whereClause,
+        include: { driver: true } 
+      });
     } else {
       return this.prisma.trip.findMany({ where: { driverId: user.id } });
     }
@@ -29,11 +33,36 @@ export class TripsService {
   }
 
   async create(data: any): Promise<Trip> {
+    if (data.vehicleNumber) {
+      const existing = await this.prisma.trip.findFirst({ where: { vehicleNumber: data.vehicleNumber } });
+      if (existing) {
+        throw new BadRequestException('Vehicle number already exists.');
+      }
+    }
     return this.prisma.trip.create({ data });
   }
 
   async update(id: number, data: any, user: any): Promise<Trip> {
     const trip = await this.findOne(id, user);
+
+    if (trip.status === 'CANCELLED') {
+      throw new BadRequestException('Cancelled trips cannot be modified.');
+    }
+    if (trip.status === 'COMPLETED') {
+      throw new BadRequestException('Completed trips cannot be modified.');
+    }
+
+    if (data.vehicleNumber && data.vehicleNumber !== trip.vehicleNumber) {
+      const existing = await this.prisma.trip.findFirst({
+        where: {
+          vehicleNumber: data.vehicleNumber,
+          id: { not: id }
+        }
+      });
+      if (existing) {
+        throw new BadRequestException('Vehicle number already exists.');
+      }
+    }
 
     if (user.role === Role.DRIVER) {
       // Drivers can only update status
@@ -41,7 +70,18 @@ export class TripsService {
         throw new ForbiddenException('Drivers can only update trip status');
       }
 
+      if (data.status === 'CANCELLED') {
+        throw new ForbiddenException('Drivers cannot cancel trips');
+      }
+
       if (data.status && data.status !== trip.status) {
+        if (trip.status === 'SCHEDULED' && data.status !== 'IN_PROGRESS') {
+          throw new BadRequestException('Invalid status transition.');
+        }
+        if (trip.status === 'IN_PROGRESS' && data.status !== 'COMPLETED') {
+          throw new BadRequestException('Invalid status transition.');
+        }
+
         await this.prisma.tripHistory.create({
           data: {
             tripId: trip.id,
@@ -60,6 +100,13 @@ export class TripsService {
 
     // Admin update logic here
     if (data.status && data.status !== trip.status) {
+      if (trip.status === 'SCHEDULED' && data.status !== 'IN_PROGRESS' && data.status !== 'CANCELLED') {
+        throw new BadRequestException('Invalid status transition.');
+      }
+      if (trip.status === 'IN_PROGRESS' && data.status !== 'COMPLETED' && data.status !== 'CANCELLED') {
+        throw new BadRequestException('Invalid status transition.');
+      }
+
       await this.prisma.tripHistory.create({
         data: {
           tripId: trip.id,
@@ -74,9 +121,5 @@ export class TripsService {
       where: { id },
       data,
     });
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.prisma.trip.delete({ where: { id } });
   }
 }

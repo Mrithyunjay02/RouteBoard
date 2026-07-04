@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateTripDto = void 0;
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 const client_1 = require("@prisma/client");
 class UpdateTripDto {
     vehicleNumber;
@@ -23,18 +24,27 @@ class UpdateTripDto {
 }
 exports.UpdateTripDto = UpdateTripDto;
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => typeof value === 'string' ? value.trim() : value),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.MaxLength)(30),
     __metadata("design:type", String)
 ], UpdateTripDto.prototype, "vehicleNumber", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => typeof value === 'string' ? value.trim() : value),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.MinLength)(2),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], UpdateTripDto.prototype, "origin", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => typeof value === 'string' ? value.trim() : value),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.MinLength)(2),
+    (0, class_validator_1.MaxLength)(100),
     __metadata("design:type", String)
 ], UpdateTripDto.prototype, "destination", void 0);
 __decorate([
@@ -43,6 +53,7 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateTripDto.prototype, "scheduledStart", void 0);
 __decorate([
+    (0, class_transformer_1.Transform)(({ value }) => typeof value === 'string' ? value.trim() : value),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
