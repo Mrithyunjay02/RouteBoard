@@ -30,9 +30,9 @@ export interface TripHistory {
   providedIn: 'root'
 })
 export class TripsService {
-  private readonly API_URL = 'http://localhost:3000/trips';
-  private readonly HISTORY_URL = 'http://localhost:3000/history';
-  private readonly USERS_URL = 'http://localhost:3000/users';
+  private readonly API_URL = 'https://routeboard.onrender.com/trips';
+  private readonly HISTORY_URL = 'https://routeboard.onrender.com/history';
+  private readonly USERS_URL = 'https://routeboard.onrender.com/users';
 
   constructor(private http: HttpClient) {}
 

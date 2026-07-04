@@ -14,7 +14,7 @@ export interface DashboardStats {
   providedIn: 'root'
 })
 export class DashboardService {
-  private readonly API_URL = 'http://localhost:3000/dashboard';
+  private readonly API_URL = 'https://routeboard.onrender.com/dashboard';
 
   constructor(private http: HttpClient) {}
 

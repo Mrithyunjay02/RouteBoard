@@ -19,7 +19,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:3000/auth';
+  private readonly API_URL = 'https://routeboard.onrender.com/auth';
   
   currentUser = signal<User | null>(null);
   
