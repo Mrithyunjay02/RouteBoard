@@ -1,12 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getRoot() {
+    return {
+      "name": "RouteBoard API",
+      "status": "Running",
+      "version": "1.0.0",
+      "message": "Backend deployed successfully.",
+      "frontend": "https://frontend-three-snowy-32.vercel.app"
+    };
   }
 }
