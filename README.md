@@ -1,95 +1,188 @@
-# RouteBoard - Fleet Management System
+# 🚛 RouteBoard - Fleet & Logistics Management System
 
-## Live Demo
+A full-stack Fleet and Logistics Management System built using **Angular**, **NestJS**, **PostgreSQL**, and **Prisma ORM**. RouteBoard enables administrators to manage trips, assign drivers, monitor trip progress, and visualize fleet analytics through an intuitive dashboard.
 
-Frontend:
+---
+
+## 🌐 Live Demo
+
+**Frontend (Vercel):**
 https://frontend-three-snowy-32.vercel.app
 
-Backend API:
+**Backend API (Render):**
 https://routeboard.onrender.com
 
-## Tech Stack
+---
 
-Frontend
-- Angular
+## ✨ Features
+
+### Authentication
+- JWT Authentication
+- Secure Login
+- Role-Based Access Control (Admin & Driver)
+
+### Admin
+- Dashboard with analytics
+- Create new trips
+- Edit trip details
+- Cancel trips
+- Assign drivers
+- View trip history
+- Filter trips by status, driver and date
+
+### Driver
+- View assigned trips
+- Update trip status
+- View trip history
+- Personal dashboard with statistics
+
+### Business Rules
+- Admin can create, edit and cancel trips.
+- Drivers can only update the status of their assigned trips.
+- Status transitions follow business workflow:
+  - Scheduled → In Progress
+  - In Progress → Completed
+- Invalid status transitions are prevented.
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+- Angular 20
 - Angular Material
+- TypeScript
 - Chart.js
 
-Backend
+## Backend
 - NestJS
 - Prisma ORM
 - JWT Authentication
 
-Database
-- PostgreSQL (Supabase)
+## Database
+- PostgreSQL
+- Supabase
 
-Deployment
+## Deployment
 - Vercel
 - Render
 
-## Features
+---
 
-### Authentication
-- JWT Login
-- Role Based Access Control
+# 📸 Application Screenshots
 
-### Admin
-- Dashboard Analytics
-- Create Trips
-- Edit Trips
-- Cancel Trips
-- Assign Drivers
-- View Trip History
+## Login Page
 
-### Driver
-- View Assigned Trips
-- Update Trip Status
-- Dashboard Analytics
+![Login](screenshots/Login.png)
 
-### Business Rules
-- Backend validates all trip status transitions.
-- Admin manages scheduling.
-- Drivers confirm delivery completion.
-- Invalid transitions are rejected.
+---
 
-## Test Credentials
+## Admin Dashboard
 
-Admin
+![Admin Dashboard](screenshots/Admin-Dashboard.png)
+
+---
+
+## Trips Management
+
+![Trips Management](screenshots/Admin-Trips.png)
+
+---
+
+## Create New Trip
+
+![Create Trip](screenshots/Create-New-Trips.png)
+
+---
+
+## Driver Dashboard
+
+![Driver Dashboard](screenshots/Driver.png)
+
+---
+
+## Update Trip Status
+
+![Update Status](screenshots/Update-Status-in-Driver.png)
+
+---
+
+# 👤 Test Credentials
+
+## Admin
 
 Email:
+```
 admin@test.com
+```
 
 Password:
-password123
+```
+admin123
+```
 
-Driver
+---
 
-Email:
-driver@test.com
-driver2@test.com
-driver3@test.com
-driver4@test.com
-driver5@test.com
+## Driver Accounts
 
-Password:
-password123
+| Driver | Email | Password |
+|---------|-------|----------|
+| Driver 1 | driver1@test.com | driver123 |
+| Driver 2 | driver2@test.com | driver123 |
+| Driver 3 | driver3@test.com | driver123 |
+| Driver 4 | driver4@test.com | driver123 |
+| Driver 5 | driver5@test.com | driver123 |
 
+---
 
+# 🚀 Installation
 
-## Installation
+Clone the repository
 
-git clone ...
+```bash
+git clone https://github.com/Mrithyunjay02/RouteBoard.git
+```
 
+### Frontend
+
+```bash
+cd frontend
 npm install
+ng serve
+```
 
-...
+### Backend
 
-## Screenshots
+```bash
+cd backend
+npm install
+npm run start:dev
+```
 
-(Add 4-6 screenshots)
+---
 
-- Login
-- Admin Dashboard
-- Trips
-- Driver Dashboard
-- Create Trip
+# 📂 Project Structure
+
+```
+RouteBoard
+│
+├── frontend/
+├── backend/
+├── screenshots/
+├── README.md
+```
+
+---
+
+# 👨‍💻 Author
+
+**Mrithyunjay D K**
+
+GitHub:
+https://github.com/Mrithyunjay02
+
+---
+
+## 📄 License
+
+This project is intended for educational and portfolio purposes.
