@@ -1,154 +1,182 @@
-# 🚛 RouteBoard - Fleet & Logistics Management System
+# RouteBoard
 
-A full-stack Fleet and Logistics Management System built using **Angular**, **NestJS**, **PostgreSQL**, and **Prisma ORM**. RouteBoard enables administrators to manage trips, assign drivers, monitor trip progress, and visualize fleet analytics through an intuitive dashboard.
+A full-stack Fleet and Logistics Management System built using Angular, NestJS, PostgreSQL, and TypeORM. The application provides secure role-based authentication and enables administrators to manage trips while allowing drivers to update the status of their assigned trips.
 
 ---
 
-## 🌐 Live Demo
+## Live Demo
 
-**Frontend (Vercel):**
+**Frontend (Vercel)**  
 https://frontend-three-snowy-32.vercel.app
 
-**Backend API (Render):**
+**Backend API (Render)**  
 https://routeboard.onrender.com
 
 ---
 
-## ✨ Features
+## GitHub Repository
+
+https://github.com/Mrithyunjay02/RouteBoard
+
+---
+
+## Features
 
 ### Authentication
-- JWT Authentication
-- Secure Login
-- Role-Based Access Control (Admin & Driver)
+- JWT-based authentication
+- Role-based authorization (Admin & Driver)
+- Secure login
+- Protected routes
 
 ### Admin
-- Dashboard with analytics
+- Dashboard with trip statistics
 - Create new trips
-- Edit trip details
+- Edit existing trips
 - Cancel trips
 - Assign drivers
+- Filter trips
 - View trip history
-- Filter trips by status, driver and date
+- Status distribution analytics
 
 ### Driver
 - View assigned trips
 - Update trip status
 - View trip history
-- Personal dashboard with statistics
+- Dashboard showing assigned trip statistics
 
 ### Business Rules
-- Admin can create, edit and cancel trips.
-- Drivers can only update the status of their assigned trips.
-- Status transitions follow business workflow:
-  - Scheduled → In Progress
-  - In Progress → Completed
-- Invalid status transitions are prevented.
+- Admin can create, edit, assign, schedule and cancel trips.
+- Drivers can update their assigned trips from Scheduled → In Progress → Completed.
+- Trip status changes are reflected immediately across both Admin and Driver dashboards.
 
 ---
 
-# 🛠 Tech Stack
+## Tech Stack
 
-## Frontend
-- Angular 20
+### Frontend
+- Angular
 - Angular Material
 - TypeScript
 - Chart.js
 
-## Backend
+### Backend
 - NestJS
-- Prisma ORM
+- TypeORM
 - JWT Authentication
-
-## Database
 - PostgreSQL
-- Supabase
 
-## Deployment
-- Vercel
-- Render
+### Database
+- PostgreSQL (Supabase)
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
 
 ---
 
-# 📸 Application Screenshots
+## Architecture
 
-## Login Page
+```
+Angular Frontend
+        │
+        │ REST API
+        ▼
+NestJS Backend
+        │
+        ▼
+PostgreSQL Database
+```
+
+---
+
+## Project Structure
+
+```
+RouteBoard
+│
+├── frontend
+│   ├── Angular Application
+│   └── Angular Material UI
+│
+├── backend
+│   ├── NestJS REST API
+│   ├── Authentication
+│   ├── Trips Module
+│   ├── Users Module
+│   └── PostgreSQL
+│
+└── screenshots
+```
+
+---
+
+## Demo Credentials
+
+### Admin Account
+
+| Email | Password |
+|--------|----------|
+| admin@test.com | password123 |
+
+### Driver Accounts
+
+| Email | Password |
+|--------|----------|
+| driver@test.com | password123 |
+| driver2@test.com | password123 |
+| driver3@test.com | password123 |
+| driver4@test.com | password123 |
+| driver5@test.com | password123 |
+
+> These accounts are provided for demonstration and evaluation purposes.
+
+---
+
+## Screenshots
+
+### Login
 
 ![Login](screenshots/Login.png)
 
 ---
 
-## Admin Dashboard
+### Admin Dashboard
 
 ![Admin Dashboard](screenshots/Admin-Dashboard.png)
 
 ---
 
-## Trips Management
+### Trips Management
 
 ![Trips Management](screenshots/Admin-Trips.png)
 
 ---
 
-## Create New Trip
+### Create New Trip
 
 ![Create Trip](screenshots/Create-New-Trips.png)
 
 ---
 
-## Driver Dashboard
+### Driver Dashboard
 
 ![Driver Dashboard](screenshots/Driver.png)
 
 ---
 
-## Update Trip Status
+### Driver Status Update
 
 ![Update Status](screenshots/Update-Status-in-Driver.png)
 
 ---
 
-# 👤 Test Credentials
+## Running Locally
 
-## Admin
-
-Email:
-```
-admin@test.com
-```
-
-Password:
-```
-admin123
-```
-
----
-
-## Driver Accounts
-
-| Driver | Email | Password |
-|---------|-------|----------|
-| Driver 1 | driver1@test.com | driver123 |
-| Driver 2 | driver2@test.com | driver123 |
-| Driver 3 | driver3@test.com | driver123 |
-| Driver 4 | driver4@test.com | driver123 |
-| Driver 5 | driver5@test.com | driver123 |
-
----
-
-# 🚀 Installation
-
-Clone the repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/Mrithyunjay02/RouteBoard.git
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-ng serve
+cd RouteBoard
 ```
 
 ### Backend
@@ -159,30 +187,55 @@ npm install
 npm run start:dev
 ```
 
----
+### Frontend
 
-# 📂 Project Structure
-
-```
-RouteBoard
-│
-├── frontend/
-├── backend/
-├── screenshots/
-├── README.md
+```bash
+cd frontend
+npm install
+ng serve
 ```
 
 ---
 
-# 👨‍💻 Author
+## Environment Variables
 
-**Mrithyunjay D K**
+### Backend (.env)
 
-GitHub:
-https://github.com/Mrithyunjay02
+```
+DATABASE_URL=
+JWT_SECRET=
+JWT_EXPIRES_IN=
+PORT=
+```
+
+### Frontend
+
+Update the API URL inside the Angular environment configuration if running locally.
 
 ---
 
-## 📄 License
+## Future Improvements
 
-This project is intended for educational and portfolio purposes.
+- Email notifications
+- Real-time trip tracking
+- Driver location integration
+- Route optimization
+- File upload support
+- Dashboard analytics enhancements
+- Unit and integration testing
+
+---
+
+## Author
+
+**D K Mrithyunjay**
+
+GitHub: https://github.com/Mrithyunjay02
+
+LinkedIn: *(Add your LinkedIn profile here if you'd like.)*
+
+---
+
+## License
+
+This project was developed as part of a technical assessment and is intended for educational and portfolio purposes.
