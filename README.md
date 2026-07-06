@@ -60,17 +60,21 @@ Email:
 admin@test.com
 
 Password:
-admin123
+password123
 
 Driver
 
 Email:
-driver1@test.com
+driver@test.com
+driver2@test.com
+driver3@test.com
+driver4@test.com
+driver5@test.com
 
 Password:
-driver123
+password123
 
-(Include all driver accounts if required.)
+
 
 ## Installation
 
